@@ -6,6 +6,9 @@ on:
   pull_request:
     branches: [main]
 
+permissions:
+  contents: write
+
 jobs:
   test:
     name: Playwright Tests
@@ -36,13 +39,17 @@ jobs:
         run: npx playwright test --project=desktop --project=mobile
         continue-on-error: true
 
-      - name: Upload report
+      - name: Generate Allure report
         if: always()
-        uses: actions/upload-artifact@v4
+        run: npx allure generate allure-results --clean -o allure-report
+
+      - name: Deploy Allure report to GitHub Pages
+        if: always() && github.ref == 'refs/heads/main'
+        uses: peaceiris/actions-gh-pages@v3
         with:
-          name: playwright-report
-          path: playwright-report/
-          retention-days: 14
+          github_token: ${{ secrets.GITHUB_TOKEN }}
+          publish_dir: ./allure-report
+          publish_branch: gh-pages
 
       - name: Set result summary
         if: always()
@@ -84,6 +91,11 @@ jobs:
                       "type": "button",
                       "text": { "type": "plain_text", "text": "View run" },
                       "url": "${{ github.server_url }}/${{ github.repository }}/actions/runs/${{ github.run_id }}"
+                    },
+                    {
+                      "type": "button",
+                      "text": { "type": "plain_text", "text": "Allure report" },
+                      "url": "https://mansverma.github.io/amblique"
                     }
                   ]
                 }
