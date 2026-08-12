@@ -1,0 +1,17 @@
+# dependencies
+node_modules/
+
+# playwright output
+test-results/
+playwright-report/
+allure-results/
+allure-report/
+
+# reference documents (PDFs are shared via Confluence / shared drive — not versioned in git)
+*.pdf
+
+# os / editor
+.DS_Store
+*.swp
+.env
+.env.local
