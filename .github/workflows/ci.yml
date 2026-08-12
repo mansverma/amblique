@@ -39,6 +39,72 @@ jobs:
         run: npx playwright test --project=desktop --project=mobile
         continue-on-error: true
 
+      - name: Generate defect report summary
+        if: always()
+        run: |
+          node - <<'EOF'
+          const fs   = require('fs');
+          const path = require('path');
+
+          const resultsFile = 'test-results/results.json';
+          if (!fs.existsSync(resultsFile)) {
+            fs.appendFileSync(process.env.GITHUB_STEP_SUMMARY, '> No test results found.\n');
+            process.exit(0);
+          }
+
+          const results = JSON.parse(fs.readFileSync(resultsFile, 'utf8'));
+          const suites  = results.suites ?? [];
+
+          let passed = 0, failed = 0, skipped = 0;
+          const failures = [];
+
+          function walk(suite, project) {
+            const proj = suite.project ?? project ?? '';
+            for (const spec of suite.specs ?? []) {
+              for (const test of spec.tests ?? []) {
+                const status = test.results?.[0]?.status ?? 'skipped';
+                if (status === 'passed')  passed++;
+                else if (status === 'skipped') skipped++;
+                else {
+                  failed++;
+                  failures.push({ project: proj, title: spec.title, suite: suite.title });
+                }
+              }
+            }
+            for (const child of suite.suites ?? []) walk(child, proj);
+          }
+          for (const s of suites) walk(s, s.project ?? '');
+
+          const total  = passed + failed + skipped;
+          const icon   = failed === 0 ? '✅' : '❌';
+          const lines  = [];
+
+          lines.push(`## ${icon} Market Street — Test Results`);
+          lines.push('');
+          lines.push(`| Total | Passed | Failed | Skipped |`);
+          lines.push(`|-------|--------|--------|---------|`);
+          lines.push(`| ${total} | ${passed} | ${failed} | ${skipped} |`);
+          lines.push('');
+
+          if (failures.length > 0) {
+            lines.push('### ❌ Failing Tests');
+            lines.push('');
+            lines.push('| Project | Suite | Test |');
+            lines.push('|---------|-------|------|');
+            for (const f of failures) {
+              lines.push(`| \`${f.project}\` | ${f.suite} | ${f.title} |`);
+            }
+            lines.push('');
+          } else {
+            lines.push('### ✅ All tests passed');
+            lines.push('');
+          }
+
+          lines.push(`> 📊 [Full Allure report](https://mansverma.github.io/amblique)`);
+
+          fs.appendFileSync(process.env.GITHUB_STEP_SUMMARY, lines.join('\n') + '\n');
+          EOF
+
       - name: Generate Allure report
         if: always()
         run: npx allure generate allure-results --clean -o allure-report
