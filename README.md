@@ -67,16 +67,15 @@ npm run test:debug
 
 ## Viewing Test Reports
 
-### Playwright HTML report
-Opens automatically after a run, or manually:
-```bash
-npm run report
-```
-Report is saved to `playwright-report/index.html`.
+### Allure report (live)
 
-### Allure report
+The latest report is always available at:
+**https://mansverma.github.io/amblique**
 
-Generate and open:
+It is published automatically after every CI run on `main`.
+
+### Run Allure report locally
+
 ```bash
 npm run allure:report
 ```
@@ -87,9 +86,10 @@ npm run allure:generate   # builds the report from allure-results/
 npm run allure:open       # opens it in the browser
 ```
 
-Report is saved to `allure-report/index.html`.
-
-> **Note:** Allure CLI must be available. It is included as a dev dependency via `allure-commandline` — no separate install needed.
+### Playwright HTML report
+```bash
+npm run report
+```
 
 ---
 
@@ -113,18 +113,7 @@ playwright.config.ts
 
 Tests run automatically on every push and pull request to `main` via GitHub Actions.
 
-Results are posted to the **#reg-amblique** Slack channel after each run.
-
-### Setting up the Slack webhook (one-time)
-
-1. Go to [api.slack.com/apps](https://api.slack.com/apps) and open your **GitHub CI** app
-2. Go to **Incoming Webhooks** → **Add New Webhook to Workspace**
-3. Select **#reg-amblique** → **Allow**
-4. Copy the webhook URL
-5. In GitHub: go to **Settings → Secrets and variables → Actions → New repository secret**
-6. Name: `SLACK_WEBHOOK_URL` — paste the URL → **Add secret**
-
-Once the secret is set, every CI run will post a pass/fail notification with a direct link to the GitHub Actions run.
+Results are posted to [#reg-amblique](https://mansworkspacegroup.slack.com/archives/C0BP9CK3QDD) after each run.
 
 ---
 
