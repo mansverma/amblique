@@ -1,0 +1,510 @@
+# Instructions
+
+- Following Playwright test failed.
+- Explain why, be concise, respect Playwright best practices.
+- Provide a snippet of code with the fix, if possible.
+
+# Test info
+
+- Name: mobile/home.spec.ts >> Mobile global header (M-GLB-101–109) >> M-GLB-102 header has two rows: utility row then search row
+- Location: tests/mobile/home.spec.ts:79:7
+
+# Error details
+
+```
+Error: expect(locator).toBeVisible() failed
+
+Locator:  locator('header').first().locator('input[placeholder="Search"]').or(locator('header').first().getByRole('searchbox')).first()
+Expected: visible
+Received: hidden
+Timeout:  5000ms
+
+Call log:
+  - Expect "toBeVisible" with timeout 5000ms
+  - waiting for locator('header').first().locator('input[placeholder="Search"]').or(locator('header').first().getByRole('searchbox')).first()
+    12 × locator resolved to <input type="text" role="combobox" data-state="closed" placeholder="Search" aria-expanded="false" aria-haspopup="dialog" aria-autocomplete="list" data-slot="popover-trigger" data-testid="header-search" aria-controls="radix-_R_67ehj5_" id="header-search-input-_R_27ehj5_" class="file:text-foreground placeholder:text-muted-foreground selection:bg-primary selection:text-primary-foreground dark:bg-input/30 border-input h-9 min-w-0 rounded-ui border bg-transparent px-3 py-1 text-base shadow-ui transition-[…/>
+       - unexpected value "hidden"
+
+```
+
+```yaml
+- link "Skip to main content":
+  - /url: "#main-content"
+- banner:
+  - link "Home":
+    - /url: /MarketStreet/en-US/
+    - img "Home"
+  - button "Find a Store"
+  - link "Sign In":
+    - /url: /MarketStreet/en-US/login
+  - link "Wishlist":
+    - /url: /MarketStreet/en-US/wishlist
+  - 'button "My cart, number of items: 0"'
+  - button "Open menu"
+  - text: Search
+  - combobox "Search"
+- main:
+  - 'heading "Storefront Next: Market Street" [level=1]'
+  - region "Hero carousel with 4 slides":
+    - region:
+      - list:
+        - listitem:
+          - img "Women's Slacks Jackets and Purses"
+          - heading "The New Season" [level=2]
+          - paragraph: A new collection shaped by contrast, proportion, and modern attitude. Introducing key pieces for the season ahead.
+          - link "Discover the Collection":
+            - /url: /MarketStreet/en-US/category/root
+    - tablist "Slide navigation":
+      - tab "Go to slide 1 of 4" [selected]
+      - tab "Go to slide 2 of 4"
+      - tab "Go to slide 3 of 4"
+      - tab "Go to slide 4 of 4"
+    - button "Pause carousel"
+    - button "Previous slide (1 of 4)"
+    - button "Next slide (1 of 4)"
+    - text: "Slide 1 of 4: The New Season"
+  - heading "Featured Products" [level=2]
+  - link "Shop all":
+    - /url: /MarketStreet/en-US/category/root
+  - region "Featured Products carousel":
+    - list:
+      - listitem:
+        - button "Add to Wishlist"
+        - button "Quick Add Leather Crossbody Bag": Quick Add
+        - paragraph: Performer
+        - heading "Leather Crossbody Bag" [level=3]:
+          - link "Leather Crossbody Bag":
+            - /url: /MarketStreet/en-US/product/standard-prd-womens-leather-crossbody-bag
+        - paragraph: "SKU: standard-prd-womens-leather-crossbody-bag"
+        - group "4 out of 5 stars, 218 reviews"
+        - button "(218)"
+        - text: "Leather Crossbody Bag Current price: $109.99 Leather Crossbody Bag List price: $139.90"
+      - listitem:
+        - button "Add to Wishlist"
+        - button "Quick Add Girls Puffer Vest": Quick Add
+        - paragraph: Performer
+        - heading "Girls Puffer Vest" [level=3]:
+          - link "Girls Puffer Vest":
+            - /url: /MarketStreet/en-US/product/girls-puffer-vest?pid=girls-puffer-vest-2t
+        - paragraph: "SKU: girls-puffer-vest"
+        - group "4 out of 5 stars, 218 reviews"
+        - button "(218)"
+        - text: "Girls Puffer Vest Current price: $33.74 Girls Puffer Vest List price from $54.90 New In - 25% Off!"
+      - listitem:
+        - button "Add to Wishlist"
+        - button "Quick Add Knit Midi Skirt": Quick Add
+        - group "Available colors":
+          - link "View Knit Midi Skirt in Beige":
+            - /url: /MarketStreet/en-US/product/womens-knit-midi-skirt?color=beige
+          - link "View Knit Midi Skirt in Black":
+            - /url: /MarketStreet/en-US/product/womens-knit-midi-skirt?color=black
+          - link "View Knit Midi Skirt in Navy":
+            - /url: /MarketStreet/en-US/product/womens-knit-midi-skirt?color=navy
+        - paragraph: Performer
+        - heading "Knit Midi Skirt" [level=3]:
+          - link "Knit Midi Skirt":
+            - /url: /MarketStreet/en-US/product/womens-knit-midi-skirt?pid=womens-knit-midi-skirt-beige-xs
+        - paragraph: "SKU: womens-knit-midi-skirt"
+        - group "4 out of 5 stars, 218 reviews"
+        - button "(218)"
+        - text: "Knit Midi Skirt Current price: $59.99 Knit Midi Skirt List price from $69.90"
+      - listitem:
+        - button "Add to Wishlist"
+        - button "Quick Add Kids Rain Boots": Quick Add
+        - paragraph: Performer
+        - heading "Kids Rain Boots" [level=3]:
+          - link "Kids Rain Boots":
+            - /url: /MarketStreet/en-US/product/kids-rain-boots?pid=kids-rain-boots-8
+        - paragraph: "SKU: kids-rain-boots"
+        - group "4 out of 5 stars, 218 reviews"
+        - button "(218)"
+        - text: "Kids Rain Boots Current price: $29.99 Kids Rain Boots List price from $49.90 $10 Off All Kids' Shoes"
+      - listitem:
+        - button "Add to Wishlist"
+        - button "Quick Add Athletic Joggers": Quick Add
+        - paragraph: Performer
+        - heading "Athletic Joggers" [level=3]:
+          - link "Athletic Joggers":
+            - /url: /MarketStreet/en-US/product/mens-athletic-joggers?pid=mens-athletic-joggers-xs
+        - paragraph: "SKU: mens-athletic-joggers"
+        - group "4 out of 5 stars, 218 reviews"
+        - button "(218)"
+        - text: "Athletic Joggers Current price: $37.49 Athletic Joggers List price from $69.90 New In - 25% Off!"
+      - listitem:
+        - button "Add to Wishlist"
+        - button "Quick Add Utility Overshirt": Quick Add
+        - paragraph: Performer
+        - heading "Utility Overshirt" [level=3]:
+          - link "Utility Overshirt":
+            - /url: /MarketStreet/en-US/product/mens-utility-overshirt?pid=mens-utility-overshirt-xs
+        - paragraph: "SKU: mens-utility-overshirt"
+        - group "4 out of 5 stars, 218 reviews"
+        - button "(218)"
+        - text: "Utility Overshirt Current price: $44.99 Utility Overshirt List price from $79.90 New In - 25% Off!"
+      - listitem:
+        - button "Add to Wishlist"
+        - button "Quick Add Waffle Long Sleeve": Quick Add
+        - paragraph: Performer
+        - heading "Waffle Long Sleeve" [level=3]:
+          - link "Waffle Long Sleeve":
+            - /url: /MarketStreet/en-US/product/mens-waffle-long-sleeve?pid=mens-waffle-long-sleeve-xs
+        - paragraph: "SKU: mens-waffle-long-sleeve"
+        - group "4 out of 5 stars, 218 reviews"
+        - button "(218)"
+        - text: "Waffle Long Sleeve Current price: $33.74 Waffle Long Sleeve List price from $59.90 New In - 25% Off!"
+      - listitem:
+        - button "Add to Wishlist"
+        - button "Quick Add Denim Midi Skirt": Quick Add
+        - paragraph: Performer
+        - heading "Denim Midi Skirt" [level=3]:
+          - link "Denim Midi Skirt":
+            - /url: /MarketStreet/en-US/product/womens-denim-midi-skirt?pid=womens-denim-midi-skirt-xs
+        - paragraph: "SKU: womens-denim-midi-skirt"
+        - group "4 out of 5 stars, 218 reviews"
+        - button "(218)"
+        - text: "Denim Midi Skirt Current price: $44.99 Denim Midi Skirt List price from $69.90 New In - 25% Off!"
+      - listitem:
+        - text: Best Seller New
+        - button "Add to Wishlist"
+        - button "Quick Add Structured Blazer": Quick Add
+        - paragraph: Performer
+        - heading "Structured Blazer" [level=3]:
+          - link "Structured Blazer":
+            - /url: /MarketStreet/en-US/product/womens-structured-blazer?pid=womens-structured-blazer-xs
+        - paragraph: "SKU: womens-structured-blazer"
+        - group "4 out of 5 stars, 218 reviews"
+        - button "(218)"
+        - text: "Structured Blazer Current price: $74.99 Structured Blazer List price from $129.90 New In - 25% Off!"
+      - listitem:
+        - text: Best Seller
+        - button "Add to Wishlist"
+        - button "Quick Add Oxford Shirt": Quick Add
+        - group "Available colors":
+          - link "View Oxford Shirt in White":
+            - /url: /MarketStreet/en-US/product/mens-oxford-shirt?color=white
+          - link "View Oxford Shirt in Blue":
+            - /url: /MarketStreet/en-US/product/mens-oxford-shirt?color=blue
+          - link "View Oxford Shirt in Pink":
+            - /url: /MarketStreet/en-US/product/mens-oxford-shirt?color=pink
+        - paragraph: Performer
+        - heading "Oxford Shirt" [level=3]:
+          - link "Oxford Shirt":
+            - /url: /MarketStreet/en-US/product/mens-oxford-shirt?pid=mens-oxford-shirt-white-xs
+        - paragraph: "SKU: mens-oxford-shirt"
+        - group "4 out of 5 stars, 218 reviews"
+        - button "(218)"
+        - text: "Oxford Shirt Current price: $69.90 Oxford Shirt List price from $79.99 3 for $99"
+      - listitem:
+        - button "Add to Wishlist"
+        - button "Quick Add Wool Blend Coat": Quick Add
+        - group "Available colors":
+          - link "View Wool Blend Coat in Beige":
+            - /url: /MarketStreet/en-US/product/womens-wool-blend-coat?color=beige
+          - link "View Wool Blend Coat in Black":
+            - /url: /MarketStreet/en-US/product/womens-wool-blend-coat?color=black
+        - paragraph: Performer
+        - heading "Wool Blend Coat" [level=3]:
+          - link "Wool Blend Coat":
+            - /url: /MarketStreet/en-US/product/womens-wool-blend-coat?pid=womens-wool-blend-coat-beige-xs
+        - paragraph: "SKU: womens-wool-blend-coat"
+        - group "4 out of 5 stars, 218 reviews"
+        - button "(218)"
+        - text: "Wool Blend Coat Current price: $144.99 Wool Blend Coat List price from $179.90"
+      - listitem:
+        - text: New
+        - button "Add to Wishlist"
+        - button "Quick Add Wide Leg Trousers": Quick Add
+        - group "Available colors":
+          - link "View Wide Leg Trousers in Black":
+            - /url: /MarketStreet/en-US/product/womens-wide-leg-trousers?color=black
+          - link "View Wide Leg Trousers in Navy":
+            - /url: /MarketStreet/en-US/product/womens-wide-leg-trousers?color=navy
+          - link "View Wide Leg Trousers in Cream":
+            - /url: /MarketStreet/en-US/product/womens-wide-leg-trousers?color=cream
+        - paragraph: Performer
+        - heading "Wide Leg Trousers" [level=3]:
+          - link "Wide Leg Trousers":
+            - /url: /MarketStreet/en-US/product/womens-wide-leg-trousers?pid=womens-wide-leg-trousers-black-xs
+        - paragraph: "SKU: womens-wide-leg-trousers"
+        - group "4 out of 5 stars, 218 reviews"
+        - button "(218)"
+        - text: "Wide Leg Trousers Current price: $53.99 Wide Leg Trousers List price from $89.90 New In - 25% Off!"
+    - button "Previous slide" [disabled]
+    - button "Next slide"
+  - heading "Style for Real Life" [level=2]
+  - paragraph: At Market Street, we believe fashion should be effortless, authentic, and accessible. Our collections are designed for the modern individual who values quality, versatility, and timeless style.
+  - region "Style for Real Life":
+    - list:
+      - listitem:
+        - link "Women Women Shop Now":
+          - /url: /MarketStreet/en-US/category/women
+          - img "Women"
+          - heading "Women" [level=3]
+          - text: Shop Now
+      - listitem:
+        - link "Men Men Shop Now":
+          - /url: /MarketStreet/en-US/category/men
+          - img "Men"
+          - heading "Men" [level=3]
+          - text: Shop Now
+      - listitem:
+        - link "Kids Kids Shop Now":
+          - /url: /MarketStreet/en-US/category/kids
+          - img "Kids"
+          - heading "Kids" [level=3]
+          - text: Shop Now
+      - listitem:
+        - link "New Arrivals New Arrivals Shop Now":
+          - /url: /MarketStreet/en-US/category/new-arrivals
+          - img "New Arrivals"
+          - heading "New Arrivals" [level=3]
+          - text: Shop Now
+    - button "Previous slide" [disabled]
+    - button "Next slide"
+  - img "Women's Collection"
+  - heading "Women" [level=3]
+  - paragraph: Discover our curated collection of sophisticated footwear designed for the modern woman.
+  - 'link "Explore collection: women''s"':
+    - /url: /MarketStreet/en-US/category/womens
+    - text: EXPLORE COLLECTION
+  - img "Men's Collection"
+  - heading "Men" [level=3]
+  - paragraph: Timeless craftsmanship meets contemporary style in our men's footwear collection.
+  - 'link "Explore collection: men''s"':
+    - /url: /MarketStreet/en-US/category/mens
+    - text: EXPLORE COLLECTION
+  - heading "Style for Real Life" [level=3]
+  - paragraph: At Market Street, we believe fashion should be effortless, authentic, and accessible. Our collections are designed for the modern individual who values quality, versatility, and timeless style. Discover pieces that move with you, adapt to your life, and become the foundation of a wardrobe that works—every day, everywhere.
+- contentinfo:
+  - heading "Join Our Community" [level=2]
+  - paragraph: Be the first to discover new arrivals, exclusive offers, and style inspiration.
+  - text: Email address for newsletter subscription
+  - textbox "Email address for newsletter subscription":
+    - /placeholder: Your email
+  - button "Subscribe"
+  - link "Market Street":
+    - /url: /MarketStreet/en-US/
+    - img "Market Street"
+  - link "Youtube":
+    - /url: https://youtube.com/channel/UCSTGHqzR1Q9yAVbiS3dAFHg
+    - img "YouTube"
+  - link "Instagram":
+    - /url: https://instagram.com/commercecloud
+    - img "Instagram"
+  - link "X":
+    - /url: https://x.com/CommerceCloud
+    - img "X"
+  - link "Facebook":
+    - /url: https://facebook.com/CommerceCloud/
+    - img "Facebook"
+  - link "About Us":
+    - /url: /MarketStreet/en-US/about-us
+  - link "Accessibility Statement":
+    - /url: /MarketStreet/en-US/accessibility
+  - link "Privacy Policy":
+    - /url: /MarketStreet/en-US/privacy
+  - link "Your Privacy Choices":
+    - /url: /MarketStreet/en-US/privacy-choices
+  - text: © 2026 Salesforce or its affiliates. All rights reserved. This is a demo store only. Orders made WILL NOT be processed.
+  - combobox "Language selector. Selecting a language reloads the page in that language.":
+    - option "English (US)" [selected]
+    - option "English (UK)"
+  - combobox "Currency switcher. Selecting a currency updates prices across the site.":
+    - option "US Dollar ($)" [selected]
+    - option "British Pound (£)"
+  - link "Privacy Policy":
+    - /url: /MarketStreet/en-US/privacy
+  - link "Terms of Use":
+    - /url: /MarketStreet/en-US/terms
+- region "Notifications alt+T"
+```
+
+# Test source
+
+```ts
+  1   | /**
+  2   |  * Mobile – Home page, global header and collapsed navigation
+  3   |  *
+  4   |  * Covers: M-ENV-05, M-ENV-09
+  5   |  *         M-GLB-101–109, M-GLB-121–131
+  6   |  *         M-HOME-101–111 (hero carousel)
+  7   |  *         M-HOME-201–208 (featured products)
+  8   |  *         M-HOME-301–309 (category tiles)
+  9   |  *         M-HOME-401–406 (collection banners)
+  10  |  *         M-TCH-101–103 (home page carousel touch gestures)
+  11  |  *
+  12  |  * Viewport: 375 × 812, iPhone 12 emulation (playwright.config.ts "mobile" project)
+  13  |  *
+  14  |  * M-ENV-04 states: "Hover is not available. No requirement may depend on hover."
+  15  |  * All desktop hover tests (HOME-308 animation, CARD-114) are therefore absent here.
+  16  |  * M-HOME-308 specifically requires Shop Now to be collapsed with no tap area.
+  17  |  */
+  18  | 
+  19  | import { test, expect } from '@playwright/test';
+  20  | import { bypassConsent, assertConsentModalControls } from '../helpers/consent';
+  21  | import { getRenderedHeight } from '../helpers/animation';
+  22  | import {
+  23  |   HOME_PATH,
+  24  |   HERO_SLIDES,
+  25  |   FEATURED_PRODUCTS,
+  26  |   WOMEN_SUBCATEGORIES,
+  27  |   MEN_SUBCATEGORIES,
+  28  |   KIDS_SUBCATEGORIES,
+  29  | } from '../fixtures';
+  30  | 
+  31  | // ---------------------------------------------------------------------------
+  32  | // M-ENV-09  Consent modal
+  33  | // ---------------------------------------------------------------------------
+  34  | test.describe('M-ENV-09 Tracking consent modal', () => {
+  35  |   test('presents Accept, Decline and Close on first visit', async ({ page }) => {
+  36  |     await page.goto(HOME_PATH);
+  37  |     const { accept, decline, close } = await assertConsentModalControls(page);
+  38  |     await expect(accept).toBeVisible();
+  39  |     await expect(decline).toBeVisible();
+  40  |     await expect(close).toBeVisible();
+  41  |   });
+  42  | });
+  43  | 
+  44  | // ---------------------------------------------------------------------------
+  45  | // M-ENV-05  No horizontal overflow
+  46  | // ---------------------------------------------------------------------------
+  47  | test.describe('M-ENV-05 No horizontal overflow', () => {
+  48  |   test('Home: document scroll width equals viewport width', async ({ page }) => {
+  49  |     await bypassConsent(page);
+  50  |     await page.goto(HOME_PATH);
+  51  |     const { scrollWidth, viewportWidth } = await page.evaluate(() => ({
+  52  |       scrollWidth:   document.documentElement.scrollWidth,
+  53  |       viewportWidth: window.innerWidth,
+  54  |     }));
+  55  |     // Allow 2px rounding tolerance — WebKit sub-pixel rounding can add ≤2px
+  56  |     expect(scrollWidth).toBeLessThanOrEqual(viewportWidth + 2);
+  57  |   });
+  58  | });
+  59  | 
+  60  | // ---------------------------------------------------------------------------
+  61  | // M-GLB-101–109  Global header
+  62  | // ---------------------------------------------------------------------------
+  63  | test.describe('Mobile global header (M-GLB-101–109)', () => {
+  64  |   test.beforeEach(async ({ page }) => {
+  65  |     await bypassConsent(page);
+  66  |     await page.goto(HOME_PATH);
+  67  |   });
+  68  | 
+  69  |   test('M-GLB-101 header is sticky (remains fixed while scrolling)', async ({ page }) => {
+  70  |     const header = page.locator('header').first();
+  71  |     const before = await header.boundingBox();
+  72  |     await page.evaluate(() => window.scrollBy(0, 400));
+  73  |     await page.waitForTimeout(200);
+  74  |     const after = await header.boundingBox();
+  75  |     // Fixed element: Y position unchanged after scroll
+  76  |     expect(after?.y).toBeCloseTo(before?.y ?? 0, 5);
+  77  |   });
+  78  | 
+  79  |   test('M-GLB-102 header has two rows: utility row then search row', async ({ page }) => {
+  80  |     const header = page.locator('header').first();
+  81  |     // Utility row contains logo + cart; search row contains the input
+  82  |     const searchInput = header.locator('input[placeholder="Search"]')
+  83  |       .or(header.getByRole('searchbox'));
+> 84  |     await expect(searchInput.first()).toBeVisible();
+      |                                       ^ Error: expect(locator).toBeVisible() failed
+  85  |     // Logo must be in a separate row above search (logo img alt="Home")
+  86  |     const logo        = header.locator('[data-testid="header-logo"]').first();
+  87  |     const logoBox     = await logo.boundingBox();
+  88  |     const searchBox   = await searchInput.first().boundingBox();
+  89  |     expect(logoBox!.y).toBeLessThan(searchBox!.y); // logo row above search row
+  90  |   });
+  91  | 
+  92  |   test('M-GLB-103 logo links to /MarketStreet/en-US/', async ({ page }) => {
+  93  |     // Logo is <a data-testid="header-logo"><img alt="Home"></a>
+  94  |     const logo = page.locator('header [data-testid="header-logo"]').first();
+  95  |     await expect(logo).toBeVisible();
+  96  |     expect(await logo.getAttribute('href')).toMatch(/\/MarketStreet\/en-US\//i);
+  97  |   });
+  98  | 
+  99  |   test('M-GLB-104 utility controls are: Find a Store, Sign In, Wishlist, Mini cart, Menu', async ({ page }) => {
+  100 |     const header = page.locator('header').first();
+  101 |     // NOTE: "Find a Store" is not implemented in this build — DEF-GLB-107
+  102 |     await expect(header.getByRole('link', { name: /sign in/i })).toBeVisible();
+  103 |     await expect(header.getByRole('link', { name: /wishlist/i })).toBeVisible();
+  104 |     await expect(header.getByRole('link', { name: /cart/i })
+  105 |       .or(header.locator('[aria-label*="cart" i]')).first()).toBeVisible();
+  106 |     await expect(header.getByRole('button', { name: /open menu|menu/i })).toBeVisible();
+  107 |   });
+  108 | 
+  109 |   test('M-GLB-105 Sign In links to /MarketStreet/en-US/login', async ({ page }) => {
+  110 |     const link = page.locator('header').getByRole('link', { name: /sign in/i });
+  111 |     expect(await link.getAttribute('href')).toContain('/MarketStreet/en-US/login');
+  112 |   });
+  113 | 
+  114 |   test('M-GLB-106 Wishlist links to /MarketStreet/en-US/wishlist', async ({ page }) => {
+  115 |     const link = page.locator('header').getByRole('link', { name: /wishlist/i });
+  116 |     expect(await link.getAttribute('href')).toContain('/MarketStreet/en-US/wishlist');
+  117 |   });
+  118 | 
+  119 |   test('M-GLB-107 mini cart accessible label includes the item count', async ({ page }) => {
+  120 |     const cart = page.locator('header').locator('[aria-label*="cart" i]').first();
+  121 |     await expect(cart).toBeVisible();
+  122 |     const label = await cart.getAttribute('aria-label');
+  123 |     expect(label).toMatch(/\d/); // contains a digit (item count)
+  124 |   });
+  125 | 
+  126 |   test('M-GLB-108 search is a single input on its own row with placeholder "Search"', async ({ page }) => {
+  127 |     const input = page.locator('header input[placeholder="Search"]')
+  128 |       .or(page.locator('header').getByRole('searchbox')).first();
+  129 |     await expect(input).toBeVisible();
+  130 |   });
+  131 | 
+  132 |   test('M-GLB-109 menu control is labelled "Open menu"; no horizontal nav bar is shown', async ({ page }) => {
+  133 |     const menuBtn = page.locator('header').getByRole('button', { name: /open menu/i });
+  134 |     await expect(menuBtn).toBeVisible();
+  135 |     // No horizontal nav list should be visible at 375 px
+  136 |     const horizontalNav = page.locator('nav ul[role], nav ol').filter({ hasText: /Women.*Men.*Kids/i });
+  137 |     await expect(horizontalNav).not.toBeVisible();
+  138 |   });
+  139 | });
+  140 | 
+  141 | // ---------------------------------------------------------------------------
+  142 | // M-GLB-121–131  Collapsed navigation menu
+  143 | // ---------------------------------------------------------------------------
+  144 | test.describe('Mobile nav menu (M-GLB-121–131)', () => {
+  145 |   test.beforeEach(async ({ page }) => {
+  146 |     await bypassConsent(page);
+  147 |     await page.goto(HOME_PATH);
+  148 |     await page.locator('header').getByRole('button', { name: /open menu/i }).click();
+  149 |     await page.waitForTimeout(400);
+  150 |   });
+  151 | 
+  152 |   test('M-GLB-121 panel opens beneath the header in page flow (not full-screen or side drawer)', async ({ page }) => {
+  153 |     const header    = page.locator('header').first();
+  154 |     const headerBox = await header.boundingBox();
+  155 |     // Panel is nav[aria-label="Mobile navigation menu"] inside div.absolute.top-full
+  156 |     const panel     = page.locator('nav[aria-label*="Mobile navigation" i]');
+  157 |     const panelBox  = await panel.boundingBox();
+  158 |     // Panel top must be at or below header bottom
+  159 |     expect(panelBox!.y).toBeGreaterThanOrEqual(headerBox!.y + headerBox!.height - 2);
+  160 |   });
+  161 | 
+  162 |   test('M-GLB-122 menu control changes to a close control while panel is open', async ({ page }) => {
+  163 |     // Button changes to aria-label="Close menu"
+  164 |     const closeBtn = page.locator('header').getByRole('button', { name: /close menu/i });
+  165 |     await expect(closeBtn).toBeVisible();
+  166 |   });
+  167 | 
+  168 |   test('M-GLB-123 four top-level items in order: Women, Men, Kids, New Arrivals', async ({ page }) => {
+  169 |     const panel = page.locator('nav[aria-label*="Mobile navigation" i]');
+  170 |     for (const label of ['Women', 'Men', 'Kids', 'New Arrivals']) {
+  171 |       await expect(panel.getByText(label, { exact: true }).first()).toBeVisible();
+  172 |     }
+  173 |     const text      = await panel.innerText();
+  174 |     const positions = ['Women', 'Men', 'Kids', 'New Arrivals'].map(l => text.indexOf(l));
+  175 |     for (let i = 1; i < positions.length; i++) {
+  176 |       expect(positions[i]).toBeGreaterThan(positions[i - 1]);
+  177 |     }
+  178 |   });
+  179 | 
+  180 |   test('M-GLB-124 expansion is accordion (in-place), not drill-down', async ({ page }) => {
+  181 |     const panel   = page.locator('nav[aria-label*="Mobile navigation" i]');
+  182 |     // Expand Women via aria-label button
+  183 |     await panel.getByRole('button', { name: /expand women/i }).click();
+  184 |     await page.waitForTimeout(400);
+```
