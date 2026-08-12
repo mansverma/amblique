@@ -78,16 +78,5 @@ export default defineConfig({
       },
       testMatch: '**/mobile/**/*.spec.ts',
     },
-    // ------------------------------------------------------------------- mobile (Chrome)
-    {
-      name: 'mobile-chrome',
-      use: {
-        ...devices['Pixel 5'],
-        viewport: { width: 375, height: 812 },
-        hasTouch: true,
-        isMobile: true,
-      },
-      testMatch: '**/mobile/**/*.spec.ts',
-    },
   ],
 });

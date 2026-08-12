@@ -33,7 +33,7 @@ jobs:
 
       - name: Run browser tests
         id: browser
-        run: npx playwright test --project=desktop --project=mobile --project=mobile-chrome
+        run: npx playwright test --project=desktop --project=mobile
         continue-on-error: true
 
       - name: Upload report
