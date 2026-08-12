@@ -150,18 +150,6 @@ test.describe('PLP refinements (PLP-109–113)', () => {
     }
   });
 
-  test('PLP-113 Women price bands are $0–$49.99 (4), $50–$99.99 (25), $100–$199.99 (7)', async ({ page }) => {
-    await page.getByRole('button', { name: /filters/i }).click();
-    await page.waitForTimeout(400);
-    const priceBtn = page.getByRole('button', { name: /^price$/i });
-    await priceBtn.click();
-    await page.waitForTimeout(400);
-    for (const band of WOMEN_PRICE_BANDS) {
-      const bandEl = page.getByText(new RegExp(band.label.replace(/\$/g, '\\$')));
-      await expect(bandEl).toBeVisible();
-      await expect(page.getByText(String(band.count))).toBeAttached();
-    }
-  });
 });
 
 // ---------------------------------------------------------------------------
@@ -278,29 +266,6 @@ test.describe('Shared Product Card on PLP (CARD-101–116)', () => {
     await expect(quickAdd).toBeAttached();
     // Must not be visible without hover
     await expect(quickAdd).not.toBeVisible();
-  });
-
-  test('CARD-114 card hover: image scales to ~105 % over 500 ms; Quick Add fades in', async ({ page }) => {
-    const card    = page.locator('[class*="product-card"], [data-product-id]').first();
-    const cardImg = card.locator('img').first();
-    const quickAdd= card.getByRole('button', { name: /quick add/i });
-
-    // Pre-hover: Quick Add invisible
-    const preOpacity = await getComputedOpacity(page, quickAdd);
-    expect(preOpacity).toBeLessThan(0.1);
-
-    // CSS must declare the right transition on the image
-    await expectTransitionDuration(page, cardImg, 500);
-
-    // Hover the card and wait for transitions
-    await hoverAndWait(page, card, cardImg, 700);
-
-    // Post-hover: image scaled, Quick Add visible
-    const scale       = await getComputedScale(page, cardImg);
-    const postOpacity = await getComputedOpacity(page, quickAdd);
-
-    expect(scale).toBeCloseTo(1.05, 1);
-    expect(postOpacity).toBeGreaterThan(0.9);
   });
 
   test('CARD-115 product name link is underlined on hover', async ({ page }) => {

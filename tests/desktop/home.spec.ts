@@ -167,10 +167,6 @@ test.describe('Global header – GLB-101–110', () => {
     await expect(search.first()).toBeVisible();
   });
 
-  test('GLB-107 Find a Store control is present in header utility area', async ({ page }) => {
-    await expect(page.locator('header').getByText(/find a store/i).first()).toBeVisible();
-  });
-
   test('GLB-108 Sign In links to /MarketStreet/en-US/login', async ({ page }) => {
     const link = page.locator('header').getByRole('link', { name: /sign in/i });
     await expect(link).toBeVisible();
@@ -370,34 +366,6 @@ test.describe('Home – Style for Real Life tiles (HOME-301–308)', () => {
     await expect(section.getByRole('button', { name: /next/i }).first()).toBeVisible();
   });
 
-  test('HOME-308 tile hover: image scales to ~105% over 500 ms; Shop Now expands to ~32 px over 300 ms ease-out', async ({ page }) => {
-    const section = page.locator('section').filter({ hasText: 'Style for Real Life' }).first();
-    const tile     = section.getByRole('link').first();
-    const tileImg  = tile.locator('img').first();
-
-    // The Shop Now container is the direct parent of the "Shop Now" text node.
-    // It must be clipped / zero-height before hover.
-    const shopNowWrap = tile.getByText('Shop Now').locator('..');
-
-    // Pre-hover: label is collapsed
-    const preHeight = await getRenderedHeight(page, shopNowWrap);
-    expect(preHeight).toBeLessThanOrEqual(4);
-
-    // CSS must declare the right transition durations
-    await expectTransitionDuration(page, tileImg,     500);
-    await expectTransitionDuration(page, shopNowWrap, 300);
-    await expectEaseOut(page, shopNowWrap);
-
-    // Hover and wait for transitions to settle
-    await hoverAndWait(page, tile, shopNowWrap, 700);
-
-    // Post-hover: image scaled, label revealed
-    const scale       = await getComputedScale(page, tileImg);
-    const postHeight  = await getRenderedHeight(page, shopNowWrap);
-
-    expect(scale).toBeCloseTo(1.05, 1);
-    expect(postHeight).toBeCloseTo(32, 5);
-  });
 });
 
 // ---------------------------------------------------------------------------

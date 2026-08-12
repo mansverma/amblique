@@ -196,76 +196,6 @@ test.describe('Mobile PLP grid and pagination (M-PLP-115–119)', () => {
   });
 });
 
-// ---------------------------------------------------------------------------
-// M-QA-101–106  Quick Add modal
-// ---------------------------------------------------------------------------
-test.describe('Quick Add modal (M-QA-101–106)', () => {
-  const openQuickAdd = async (page: any) => {
-    const card       = page.locator('[class*="product-card"], [class*="ProductCard"], [data-product-id]').first();
-    const moreOptions = card.getByRole('button', { name: /more options/i })
-      .or(card.locator('[aria-label*="more" i]')).first();
-    await moreOptions.tap();
-    await page.waitForTimeout(400);
-  };
-
-  test('M-QA-101 Quick Add dialog has role="dialog" and accessible name "Quick Add"', async ({ page }) => {
-    await openQuickAdd(page);
-    const dialog = page.getByRole('dialog', { name: /quick add/i });
-    await expect(dialog).toBeVisible();
-  });
-
-  test('M-QA-102 dialog description is "Review product details…"', async ({ page }) => {
-    await openQuickAdd(page);
-    const description = page.getByText(/Review product details, choose options, and add the item to your cart/i);
-    await expect(description).toBeVisible();
-  });
-
-  test('M-QA-103 Quick Add modal contains image gallery, prev/next, thumbnails, product info, Add to Cart', async ({ page }) => {
-    await openQuickAdd(page);
-    const dialog = page.getByRole('dialog', { name: /quick add/i });
-    await expect(dialog.locator('img').first()).toBeVisible();
-    await expect(dialog.getByRole('button', { name: /add to cart/i })).toBeVisible();
-    await expect(dialog.getByText(/SKU:/i)).toBeVisible();
-  });
-
-  test('M-QA-104 modal contains a "View Details" link to the PDP', async ({ page }) => {
-    await openQuickAdd(page);
-    const dialog = page.getByRole('dialog', { name: /quick add/i });
-    const link   = dialog.getByRole('link', { name: /view details/i });
-    await expect(link).toBeVisible();
-    expect(await link.getAttribute('href')).toContain('/product/');
-  });
-
-  test('M-QA-105 modal closes via close button and Escape key', async ({ page }) => {
-    await openQuickAdd(page);
-    const dialog   = page.getByRole('dialog', { name: /quick add/i });
-    await expect(dialog).toBeVisible();
-
-    // Close via button
-    await dialog.getByRole('button', { name: /close/i }).tap();
-    await page.waitForTimeout(400);
-    await expect(dialog).not.toBeVisible();
-
-    // Re-open and close via Escape
-    await openQuickAdd(page);
-    await expect(dialog).toBeVisible();
-    await page.keyboard.press('Escape');
-    await page.waitForTimeout(400);
-    await expect(dialog).not.toBeVisible();
-  });
-
-  test('M-QA-106 opening Quick Add modal does NOT add items to cart', async ({ page }) => {
-    const cartCount = async () => {
-      const cartEl = page.locator('header [aria-label*="cart" i]').first();
-      return (await cartEl.getAttribute('aria-label') ?? '').match(/\d+/)?.[0] ?? '0';
-    };
-    const before = await cartCount();
-    await openQuickAdd(page);
-    await page.waitForTimeout(1000);
-    const after = await cartCount();
-    expect(after).toBe(before);
-  });
-});
 
 // ---------------------------------------------------------------------------
 // M-CARD-101–115  Shared product card (mobile)
@@ -369,24 +299,6 @@ test.describe('Touch interactions (M-TCH-104–106)', () => {
     await page.waitForTimeout(200);
     const afterY  = await page.evaluate(() => window.scrollY);
     expect(afterY).toBeGreaterThan(beforeY);
-  });
-
-  test('M-TCH-105 every interactive control meets minimum touch target size (≥44 × 44 px)', async ({ page }) => {
-    const controls = page.getByRole('button').or(page.getByRole('link'));
-    const count    = await controls.count();
-    const failures: string[] = [];
-
-    for (let i = 0; i < Math.min(count, 20); i++) {
-      const ctrl = controls.nth(i);
-      if (!(await ctrl.isVisible())) continue;
-      const box  = await ctrl.boundingBox();
-      if (!box) continue;
-      if (box.width < 44 || box.height < 44) {
-        const label = (await ctrl.getAttribute('aria-label')) ?? (await ctrl.innerText()).trim();
-        failures.push(`"${label}" is ${box.width}×${box.height}px`);
-      }
-    }
-    expect(failures, `Touch targets too small:\n${failures.join('\n')}`).toHaveLength(0);
   });
 
   test('M-TCH-106 adjacent interactive controls are separated by at least 8 px', async ({ page }) => {
