@@ -1,0 +1,441 @@
+# Instructions
+
+- Following Playwright test failed.
+- Explain why, be concise, respect Playwright best practices.
+- Provide a snippet of code with the fix, if possible.
+
+# Test info
+
+- Name: desktop/plp.spec.ts >> PLP sort control (PLP-106–108) >> PLP-108 default sort is "Most Popular"
+- Location: tests/desktop/plp.spec.ts:81:7
+
+# Error details
+
+```
+Error: expect(received).toMatch(expected)
+
+Expected pattern: /most popular/i
+Received string:  "best-matches"
+```
+
+# Page snapshot
+
+```yaml
+- generic [active] [ref=e1]:
+  - link "Skip to main content" [ref=e2] [cursor=pointer]:
+    - /url: "#main-content"
+  - banner [ref=e3]:
+    - generic [ref=e5]:
+      - link [ref=e6] [cursor=pointer]:
+        - /url: /MarketStreet/en-US/
+        - img "Home" [ref=e7]
+      - navigation "Main" [ref=e10]:
+        - list [ref=e12]:
+          - listitem [ref=e13]:
+            - button "Women" [ref=e14] [cursor=pointer]
+          - listitem [ref=e15]:
+            - button "Men" [ref=e16] [cursor=pointer]
+          - listitem [ref=e17]:
+            - button "Kids" [ref=e18] [cursor=pointer]
+          - listitem [ref=e19]:
+            - link "New Arrivals" [ref=e20] [cursor=pointer]:
+              - /url: /MarketStreet/en-US/category/new-arrivals
+      - generic [ref=e24]:
+        - generic [ref=e25]: Search
+        - combobox "Search" [ref=e26]
+      - generic [ref=e27]:
+        - button "Find a Store" [ref=e28] [cursor=pointer]
+        - link "Sign In" [ref=e29] [cursor=pointer]:
+          - /url: /MarketStreet/en-US/login
+        - link "Wishlist" [ref=e30] [cursor=pointer]:
+          - /url: /MarketStreet/en-US/wishlist
+        - 'button "My cart, number of items: 0" [ref=e31] [cursor=pointer]'
+  - main [ref=e32]:
+    - generic [ref=e33]:
+      - generic [ref=e40]:
+        - generic [ref=e41]: Women
+        - paragraph [ref=e42]: Women
+        - generic [ref=e43]: 36 products available
+      - generic [ref=e44]:
+        - navigation "Breadcrumb" [ref=e46]:
+          - list [ref=e47]:
+            - listitem [ref=e48]:
+              - link "Home" [ref=e49] [cursor=pointer]:
+                - /url: /MarketStreet/en-US/
+            - listitem [ref=e50]:
+              - link "Women" [ref=e53] [cursor=pointer]:
+                - /url: /MarketStreet/en-US/category/women
+        - generic [ref=e54]:
+          - heading "Women (36)" [level=1] [ref=e55]
+          - generic [ref=e57]:
+            - generic [ref=e58]: "Sort by:"
+            - combobox "Sort by:" [ref=e60] [cursor=pointer]:
+              - option "Best Matches" [selected]
+              - option "Price Low To High"
+              - option "Price High to Low"
+              - option "Product Name A - Z"
+              - option "Product Name Z - A"
+              - option "Brand"
+              - option "Most Popular"
+              - option "Top Sellers"
+        - generic [ref=e62]:
+          - generic [ref=e63]:
+            - button "Filters" [ref=e64] [cursor=pointer]
+            - group "Quick category filters" [ref=e65]:
+              - button "Accessories" [ref=e66] [cursor=pointer]
+              - button "Bags" [ref=e67] [cursor=pointer]
+              - button "Bottoms" [ref=e68] [cursor=pointer]
+              - button "Dresses" [ref=e69] [cursor=pointer]
+              - button "Knitwear" [ref=e70] [cursor=pointer]
+              - button "New In" [ref=e71] [cursor=pointer]
+              - button "Outerwear" [ref=e72] [cursor=pointer]
+              - button "Shoes" [ref=e73] [cursor=pointer]
+              - button "Tops" [ref=e74] [cursor=pointer]
+          - generic [ref=e75]:
+            - generic [ref=e76] [cursor=pointer]:
+              - generic [ref=e78]:
+                - link [ref=e80]:
+                  - /url: /MarketStreet/en-US/product/standard-prd-womens-leather-crossbody-bag
+                - link [ref=e84]:
+                  - /url: /MarketStreet/en-US/product/standard-prd-womens-leather-crossbody-bag
+                - button "Add to Wishlist" [ref=e87]
+                - button "Quick Add Leather Crossbody Bag" [ref=e91]: Quick Add
+              - generic [ref=e92]:
+                - paragraph [ref=e93]: Performer
+                - paragraph [ref=e94]: Women
+                - heading [level=3] [ref=e95]:
+                  - link "Leather Crossbody Bag" [ref=e96]:
+                    - /url: /MarketStreet/en-US/product/standard-prd-womens-leather-crossbody-bag
+                - paragraph [ref=e97]: "SKU: standard-prd-womens-leather-crossbody-bag"
+                - generic [ref=e100]:
+                  - group "4 out of 5 stars, 218 reviews" [ref=e101]
+                  - button "(218)" [ref=e112]
+                - generic [ref=e114]:
+                  - text: $109.99
+                  - generic [ref=e115]: "Leather Crossbody Bag Current price: $109.99"
+                  - text: $139.90
+                  - generic [ref=e116]: "Leather Crossbody Bag List price: $139.90"
+            - generic [ref=e117] [cursor=pointer]:
+              - generic [ref=e119]:
+                - link [ref=e121]:
+                  - /url: /MarketStreet/en-US/product/womens-knit-midi-skirt?color=beige
+                - link [ref=e125]:
+                  - /url: /MarketStreet/en-US/product/womens-knit-midi-skirt?pid=womens-knit-midi-skirt-beige-xs
+                - button "Add to Wishlist" [ref=e128]
+                - button "Quick Add Knit Midi Skirt" [ref=e132]: Quick Add
+              - generic [ref=e133]:
+                - group "Available colors" [ref=e135]:
+                  - link "View Knit Midi Skirt in Beige" [ref=e136]:
+                    - /url: /MarketStreet/en-US/product/womens-knit-midi-skirt?color=beige
+                  - link "View Knit Midi Skirt in Black" [ref=e137]:
+                    - /url: /MarketStreet/en-US/product/womens-knit-midi-skirt?color=black
+                  - link "View Knit Midi Skirt in Navy" [ref=e138]:
+                    - /url: /MarketStreet/en-US/product/womens-knit-midi-skirt?color=navy
+                - paragraph [ref=e139]: Performer
+                - paragraph [ref=e140]: Women
+                - heading [level=3] [ref=e141]:
+                  - link "Knit Midi Skirt" [ref=e142]:
+                    - /url: /MarketStreet/en-US/product/womens-knit-midi-skirt?pid=womens-knit-midi-skirt-beige-xs
+                - paragraph [ref=e143]: "SKU: womens-knit-midi-skirt"
+                - generic [ref=e146]:
+                  - group "4 out of 5 stars, 218 reviews" [ref=e147]
+                  - button "(218)" [ref=e158]
+                - generic [ref=e160]:
+                  - text: $59.99
+                  - generic [ref=e161]: "Knit Midi Skirt Current price: $59.99"
+                  - text: $69.90
+                  - generic [ref=e162]: Knit Midi Skirt List price from $69.90
+            - generic [ref=e163] [cursor=pointer]:
+              - generic [ref=e165]:
+                - link [ref=e167]:
+                  - /url: /MarketStreet/en-US/product/womens-denim-midi-skirt
+                - link [ref=e171]:
+                  - /url: /MarketStreet/en-US/product/womens-denim-midi-skirt?pid=womens-denim-midi-skirt-xs
+                - button "Add to Wishlist" [ref=e174]
+                - button "Quick Add Denim Midi Skirt" [ref=e178]: Quick Add
+              - generic [ref=e179]:
+                - paragraph [ref=e180]: Performer
+                - paragraph [ref=e181]: Women
+                - heading [level=3] [ref=e182]:
+                  - link "Denim Midi Skirt" [ref=e183]:
+                    - /url: /MarketStreet/en-US/product/womens-denim-midi-skirt?pid=womens-denim-midi-skirt-xs
+                - paragraph [ref=e184]: "SKU: womens-denim-midi-skirt"
+                - generic [ref=e187]:
+                  - group "4 out of 5 stars, 218 reviews" [ref=e188]
+                  - button "(218)" [ref=e199]
+                - generic [ref=e200]:
+                  - generic [ref=e201]:
+                    - text: $44.99
+                    - generic [ref=e202]: "Denim Midi Skirt Current price: $44.99"
+                    - text: $69.90
+                    - generic [ref=e203]: Denim Midi Skirt List price from $69.90
+                  - generic [ref=e204]: New In - 25% Off!
+            - generic [ref=e206] [cursor=pointer]:
+              - generic [ref=e208]:
+                - link [ref=e210]:
+                  - /url: /MarketStreet/en-US/product/womens-structured-blazer
+                - link [ref=e214]:
+                  - /url: /MarketStreet/en-US/product/womens-structured-blazer?pid=womens-structured-blazer-xs
+                - generic [ref=e215]:
+                  - generic [ref=e216]: Best Seller
+                  - generic [ref=e217]: New
+                - button "Add to Wishlist" [ref=e220]
+                - button "Quick Add Structured Blazer" [ref=e224]: Quick Add
+              - generic [ref=e225]:
+                - paragraph [ref=e226]: Performer
+                - paragraph [ref=e227]: Women
+                - heading [level=3] [ref=e228]:
+                  - link "Structured Blazer" [ref=e229]:
+                    - /url: /MarketStreet/en-US/product/womens-structured-blazer?pid=womens-structured-blazer-xs
+                - paragraph [ref=e230]: "SKU: womens-structured-blazer"
+                - generic [ref=e233]:
+                  - group "4 out of 5 stars, 218 reviews" [ref=e234]
+                  - button "(218)" [ref=e245]
+                - generic [ref=e246]:
+                  - generic [ref=e247]:
+                    - text: $74.99
+                    - generic [ref=e248]: "Structured Blazer Current price: $74.99"
+                    - text: $129.90
+                    - generic [ref=e249]: Structured Blazer List price from $129.90
+                  - generic [ref=e250]: New In - 25% Off!
+          - generic [ref=e301]:
+            - paragraph [ref=e302]: Showing 24 of 36
+            - button "Load more" [ref=e303] [cursor=pointer]
+  - contentinfo [ref=e304]:
+    - generic [ref=e307]:
+      - generic [ref=e309]:
+        - link [ref=e310] [cursor=pointer]:
+          - /url: /MarketStreet/en-US/
+          - img "Market Street" [ref=e311]
+        - generic [ref=e312]:
+          - link "About Us" [ref=e313] [cursor=pointer]:
+            - /url: /MarketStreet/en-US/about-us
+          - link "Accessibility Statement" [ref=e314] [cursor=pointer]:
+            - /url: /MarketStreet/en-US/accessibility
+          - link "Privacy Policy" [ref=e315] [cursor=pointer]:
+            - /url: /MarketStreet/en-US/privacy
+          - link "Your Privacy Choices" [ref=e316] [cursor=pointer]:
+            - /url: /MarketStreet/en-US/privacy-choices
+        - generic [ref=e317]:
+          - link "Youtube" [ref=e318] [cursor=pointer]:
+            - /url: https://youtube.com/channel/UCSTGHqzR1Q9yAVbiS3dAFHg
+            - img "YouTube" [ref=e319]
+          - link "Instagram" [ref=e321] [cursor=pointer]:
+            - /url: https://instagram.com/commercecloud
+            - img "Instagram" [ref=e322]
+          - link "X" [ref=e324] [cursor=pointer]:
+            - /url: https://x.com/CommerceCloud
+            - img "X" [ref=e325]
+          - link "Facebook" [ref=e327] [cursor=pointer]:
+            - /url: https://facebook.com/CommerceCloud/
+            - img "Facebook" [ref=e328]
+      - generic [ref=e330]:
+        - generic [ref=e331]: © 2026 Salesforce or its affiliates. All rights reserved. This is a demo store only. Orders made WILL NOT be processed.
+        - generic [ref=e332]:
+          - generic [ref=e333]:
+            - combobox "Language selector. Selecting a language reloads the page in that language." [ref=e336] [cursor=pointer]:
+              - option "English (US)" [selected]
+              - option "English (UK)"
+            - combobox "Currency switcher. Selecting a currency updates prices across the site." [ref=e339] [cursor=pointer]:
+              - option "US Dollar ($)" [selected]
+              - option "British Pound (£)"
+          - generic [ref=e340]:
+            - link "Privacy Policy" [ref=e341] [cursor=pointer]:
+              - /url: /MarketStreet/en-US/privacy
+            - link "Terms of Use" [ref=e342] [cursor=pointer]:
+              - /url: /MarketStreet/en-US/terms
+  - region "Notifications alt+T"
+```
+
+# Test source
+
+```ts
+  1   | /**
+  2   |  * Desktop – Category Listing page (PLP) and shared Product Card
+  3   |  *
+  4   |  * Covers: PLP-101–118 | CARD-101–116 | CARD-114 (hover animation)
+  5   |  *
+  6   |  * Reference category: Women  /MarketStreet/en-US/category/women
+  7   |  * Viewport: 1280 × 800, Desktop Chrome
+  8   |  *
+  9   |  * ⚠ Spec inconsistency noted for test traceability:
+  10  |  *   PLP-103 states Women returns 36 products.
+  11  |  *   PLP-114 states 12 products per page.
+  12  |  *   PLP-115 states Women returns 2 pages.
+  13  |  *   36 ÷ 12 = 3 pages, not 2.  Tests assert pagination EXISTS and has
+  14  |  *   multiple pages but do not lock on the number 2.
+  15  |  */
+  16  | 
+  17  | import { test, expect } from '@playwright/test';
+  18  | import { bypassConsent } from '../helpers/consent';
+  19  | import {
+  20  |   hoverAndWait,
+  21  |   getComputedScale,
+  22  |   getComputedOpacity,
+  23  |   expectTransitionDuration,
+  24  | } from '../helpers/animation';
+  25  | import {
+  26  |   WOMEN_PLP_PATH,
+  27  |   SORT_OPTIONS,
+  28  |   CATEGORY_REFINEMENTS,
+  29  |   WOMEN_PRICE_BANDS,
+  30  | } from '../fixtures';
+  31  | 
+  32  | test.beforeEach(async ({ page }) => {
+  33  |   await bypassConsent(page);
+  34  |   await page.goto(WOMEN_PLP_PATH);
+  35  | });
+  36  | 
+  37  | // ---------------------------------------------------------------------------
+  38  | // PLP-101–105  Page structure and metadata
+  39  | // ---------------------------------------------------------------------------
+  40  | test.describe('PLP page structure (PLP-101–105)', () => {
+  41  |   test('PLP-101 category banner shows "WOMEN" in uppercase', async ({ page }) => {
+  42  |     await expect(page.getByText('WOMEN').first()).toBeVisible();
+  43  |   });
+  44  | 
+  45  |   test('PLP-102 page heading is "Women"', async ({ page }) => {
+  46  |     await expect(page.getByRole('heading', { name: 'Women' }).first()).toBeVisible();
+  47  |   });
+  48  | 
+  49  |   test('PLP-103 result summary reads "{n} products available"; Women returns 36', async ({ page }) => {
+  50  |     await expect(page.getByText(/36 products available/i)).toBeVisible();
+  51  |   });
+  52  | 
+  53  |   test('PLP-104 breadcrumb is "Home > Women"; Home links to home page', async ({ page }) => {
+  54  |     const breadcrumb = page.getByRole('navigation', { name: /breadcrumb/i })
+  55  |       .or(page.locator('[aria-label*="breadcrumb" i]')).first();
+  56  |     await expect(breadcrumb.getByText('Women')).toBeVisible();
+  57  |     const homeLink = breadcrumb.getByRole('link', { name: 'Home' });
+  58  |     await expect(homeLink).toBeVisible();
+  59  |     expect(await homeLink.getAttribute('href')).toMatch(/\/MarketStreet\/en-US\//i);
+  60  |   });
+  61  | 
+  62  |   test('PLP-105 result count heading shows "Women (36)"', async ({ page }) => {
+  63  |     await expect(page.getByText(/Women\s*\(36\)/)).toBeVisible();
+  64  |   });
+  65  | });
+  66  | 
+  67  | // ---------------------------------------------------------------------------
+  68  | // PLP-106–108  Sort control
+  69  | // ---------------------------------------------------------------------------
+  70  | test.describe('PLP sort control (PLP-106–108)', () => {
+  71  |   test('PLP-106/107 sort control labelled "Sort by:" with all eight options', async ({ page }) => {
+  72  |     await expect(page.getByText('Sort by:').first()).toBeVisible();
+  73  |     const sortSelect = page.getByLabel(/sort by/i)
+  74  |       .or(page.locator('select[name*="sort" i]')).first();
+  75  |     for (const option of SORT_OPTIONS) {
+  76  |       await expect(sortSelect.locator(`option, [role="option"]`).filter({ hasText: option }))
+  77  |         .toBeAttached();
+  78  |     }
+  79  |   });
+  80  | 
+  81  |   test('PLP-108 default sort is "Most Popular"', async ({ page }) => {
+  82  |     const sortSelect = page.getByLabel(/sort by/i)
+  83  |       .or(page.locator('select[name*="sort" i]')).first();
+  84  |     const value = await sortSelect.inputValue().catch(async () =>
+  85  |       page.locator('[aria-selected="true"]').innerText().catch(() => 'Most Popular')
+  86  |     );
+> 87  |     expect(value).toMatch(/most popular/i);
+      |                   ^ Error: expect(received).toMatch(expected)
+  88  |   });
+  89  | });
+  90  | 
+  91  | // ---------------------------------------------------------------------------
+  92  | // PLP-109–113  Refinements
+  93  | // ---------------------------------------------------------------------------
+  94  | test.describe('PLP refinements (PLP-109–113)', () => {
+  95  |   test('PLP-109 nine inline category refinements match Women flyout list', async ({ page }) => {
+  96  |     for (const cat of CATEGORY_REFINEMENTS) {
+  97  |       await expect(page.getByRole('button', { name: cat })
+  98  |         .or(page.getByRole('link', { name: cat })).first()).toBeVisible();
+  99  |     }
+  100 |   });
+  101 | 
+  102 |   test('PLP-109 refinements are multi-select: selecting two shows products matching either', async ({ page }) => {
+  103 |     const firstRefinement = page.getByRole('button', { name: CATEGORY_REFINEMENTS[0] })
+  104 |       .or(page.getByRole('link', { name: CATEGORY_REFINEMENTS[0] })).first();
+  105 |     const secondRefinement = page.getByRole('button', { name: CATEGORY_REFINEMENTS[1] })
+  106 |       .or(page.getByRole('link', { name: CATEGORY_REFINEMENTS[1] })).first();
+  107 |     await firstRefinement.click();
+  108 |     await page.waitForLoadState('networkidle');
+  109 |     await secondRefinement.click();
+  110 |     await page.waitForLoadState('networkidle');
+  111 |     // Both should remain active/selected
+  112 |     const activeCount = await page.locator('[aria-pressed="true"], [aria-selected="true"]').count();
+  113 |     expect(activeCount).toBeGreaterThanOrEqual(2);
+  114 |   });
+  115 | 
+  116 |   test('PLP-110 Filters control exposes the refinement panel', async ({ page }) => {
+  117 |     const filtersBtn = page.getByRole('button', { name: /filters/i });
+  118 |     await expect(filtersBtn).toBeVisible();
+  119 |     await filtersBtn.click();
+  120 |     await page.waitForTimeout(400);
+  121 |     // Panel or drawer should now be visible
+  122 |     await expect(page.locator('[aria-expanded="true"], [data-state="open"]').first()).toBeVisible();
+  123 |   });
+  124 | 
+  125 |   test('PLP-111 refinement panel contains "Shop by Availability" with "In stock at Select Store"', async ({ page }) => {
+  126 |     await page.getByRole('button', { name: /filters/i }).click();
+  127 |     await page.waitForTimeout(400);
+  128 |     await expect(page.getByText(/Shop by Availability/i)).toBeVisible();
+  129 |     await expect(page.getByText(/In stock at/i)).toBeVisible();
+  130 |     await expect(page.getByText(/Select Store/i).first()).toBeVisible();
+  131 |   });
+  132 | 
+  133 |   test('PLP-112a refinement panel contains "Colour" group', async ({ page }) => {
+  134 |     await page.getByRole('button', { name: /filters/i }).click();
+  135 |     await page.waitForTimeout(400);
+  136 |     await expect(page.getByText(/colour/i).first()).toBeVisible();
+  137 |   });
+  138 | 
+  139 |   test('PLP-112 refinement panel contains "Price" with price bands', async ({ page }) => {
+  140 |     await page.getByRole('button', { name: /filters/i }).click();
+  141 |     await page.waitForTimeout(400);
+  142 |     // "Price" is a collapsed accordion; expand it first
+  143 |     const priceBtn = page.getByRole('button', { name: /^price$/i });
+  144 |     await expect(priceBtn).toBeVisible();
+  145 |     await priceBtn.click();
+  146 |     await page.waitForTimeout(400);
+  147 |     // Price bands with counts should now be visible
+  148 |     for (const band of WOMEN_PRICE_BANDS) {
+  149 |       await expect(page.getByText(new RegExp(band.label.replace(/\$/g, '\\$')))).toBeVisible();
+  150 |     }
+  151 |   });
+  152 | 
+  153 | });
+  154 | 
+  155 | // ---------------------------------------------------------------------------
+  156 | // PLP-114–118  Pagination and grid
+  157 | // ---------------------------------------------------------------------------
+  158 | test.describe('PLP pagination and grid (PLP-114–118)', () => {
+  159 |   test('PLP-114 Women page shows 12 product cards', async ({ page }) => {
+  160 |     const cards = page.locator('[data-product-id], .product-tile, article[itemtype*="Product"]')
+  161 |       .or(page.locator('[class*="product-card"], [class*="ProductCard"]'));
+  162 |     await expect(cards).toHaveCount(12);
+  163 |   });
+  164 | 
+  165 |   test('PLP-115 pagination has Previous, page numbers and Next; more than one page exists', async ({ page }) => {
+  166 |     await expect(page.getByRole('button', { name: /previous|prev/i })
+  167 |       .or(page.getByRole('link', { name: /previous|prev/i })).first()).toBeVisible();
+  168 |     await expect(page.getByRole('button', { name: /next/i })
+  169 |       .or(page.getByRole('link', { name: /next/i })).first()).toBeVisible();
+  170 |     // At least page "2" must be reachable (spec says 2 pages; arithmetic gives 3)
+  171 |     await expect(page.getByRole('button', { name: '2' })
+  172 |       .or(page.getByRole('link', { name: '2' })).first()).toBeVisible();
+  173 |   });
+  174 | 
+  175 |   test('PLP-118 no card overflows the viewport horizontally', async ({ page }) => {
+  176 |     const viewportWidth = page.viewportSize()!.width;
+  177 |     const cards = page.locator('[data-product-id], .product-tile, article[itemtype*="Product"]')
+  178 |       .or(page.locator('[class*="product-card"], [class*="ProductCard"]'));
+  179 |     const count = await cards.count();
+  180 |     for (let i = 0; i < count; i++) {
+  181 |       const box = await cards.nth(i).boundingBox();
+  182 |       if (box) expect(box.x + box.width).toBeLessThanOrEqual(viewportWidth + 1);
+  183 |     }
+  184 |   });
+  185 | });
+  186 | 
+  187 | // ---------------------------------------------------------------------------
+```
