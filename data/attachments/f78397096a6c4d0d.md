@@ -1,0 +1,244 @@
+# Instructions
+
+- Following Playwright test failed.
+- Explain why, be concise, respect Playwright best practices.
+- Provide a snippet of code with the fix, if possible.
+
+# Test info
+
+- Name: desktop/home.spec.ts >> Home – Style for Real Life tiles (HOME-301–308) >> HOME-306 tile links target correct category URLs
+- Location: tests/desktop/home.spec.ts:347:7
+
+# Error details
+
+```
+Error: expect(locator).toBeAttached() failed
+
+Locator: locator('section').filter({ hasText: 'Style for Real Life' }).first().locator('a[href*="/category/women"]').first()
+Expected: attached
+Timeout: 5000ms
+Error: element(s) not found
+
+Call log:
+  - Expect "toBeAttached" with timeout 5000ms
+  - waiting for locator('section').filter({ hasText: 'Style for Real Life' }).first().locator('a[href*="/category/women"]').first()
+
+```
+
+```yaml
+- link "skipToMainContent":
+  - /url: "#main-content"
+- banner:
+  - link "Logo":
+    - /url: /MarketStreet/en-US/
+    - img "Logo"
+- main:
+  - heading "Something went wrong" [level=1]
+  - paragraph: "Error: Access token is invalid or revoked"
+  - link "Go to Homepage":
+    - /url: /MarketStreet/en-US/
+  - heading "Stack Trace" [level=2]
+  - code: "AuthTokenInvalidError: Access token is invalid or revoked at Proxy.t3 (/var/task/node_modules/.pnpm/@salesforce+storefront-next-runtime@1.2.0_97f34e813a01aab35f4cb0f9d67adba1/node_modules/@salesforce/storefront-next-runtime/dist/scapi.js:1:8723) at process.processTicksAndRejections (node:internal/process/task_queues:103:5) at async fetchComponent (/var/task/src/lib/api/component.server.ts:48:20) at async fetchComponentWithComponentData (/var/task/src/lib/page-designer/component-loader.server.ts:61:21)"
+  - paragraph:
+    - text: To disable stack traces in production, turn off
+    - code: unstable_devTools
+    - text: in your router config.
+- contentinfo:
+  - paragraph: © 2026 All rights reserved.
+- region "Notifications alt+T"
+```
+
+# Test source
+
+```ts
+  258 |     const laterSlideVisible =
+  259 |       (await page.getByRole('heading', { name: HERO_SLIDES[1].heading }).first().isVisible()) ||
+  260 |       (await page.getByRole('heading', { name: HERO_SLIDES[2].heading }).first().isVisible()) ||
+  261 |       (await page.getByRole('heading', { name: HERO_SLIDES[3].heading }).first().isVisible());
+  262 |     expect(laterSlideVisible).toBe(true);
+  263 |   });
+  264 | });
+  265 | 
+  266 | // ---------------------------------------------------------------------------
+  267 | // HOME-201–206  Featured Products carousel
+  268 | // ---------------------------------------------------------------------------
+  269 | test.describe('Home – Featured Products carousel (HOME-201–206)', () => {
+  270 |   test.beforeEach(async ({ page }) => {
+  271 |     await bypassConsent(page);
+  272 |     await page.goto(HOME_PATH);
+  273 |   });
+  274 | 
+  275 |   test('HOME-201 section heading is "Featured Products"', async ({ page }) => {
+  276 |     await expect(page.getByRole('heading', { name: 'Featured Products' })).toBeVisible();
+  277 |   });
+  278 | 
+  279 |   test('HOME-202 "Shop all" link targets /category/root', async ({ page }) => {
+  280 |     const shopAll = page.getByRole('link', { name: /shop all/i });
+  281 |     await expect(shopAll).toBeVisible();
+  282 |     expect(await shopAll.getAttribute('href')).toContain('/category/root');
+  283 |   });
+  284 | 
+  285 |   test('HOME-203 first product in carousel is "Leather Crossbody Bag" (order per HOME-204)', async ({ page }) => {
+  286 |     const section = page.locator('.section-container, section').filter({ hasText: 'Featured Products' }).first();
+  287 |     await expect(section.getByText('Leather Crossbody Bag').first()).toBeVisible();
+  288 |   });
+  289 | 
+  290 |   test('HOME-203 NOTE carousel contains ≥10 reachable products (spec says 10; product list has 12)', async ({ page }) => {
+  291 |     const section = page.locator('.section-container, section').filter({ hasText: 'Featured Products' }).first();
+  292 |     const next = section.getByRole('button', { name: /next/i }).first();
+  293 |     const seen = new Set<string>();
+  294 |     for (let i = 0; i < 6; i++) {
+  295 |       for (const name of FEATURED_PRODUCTS) {
+  296 |         if (await section.getByText(name).first().isVisible()) seen.add(name);
+  297 |       }
+  298 |       const isDisabled = await next.isDisabled().catch(() => false);
+  299 |       if (isDisabled) break;
+  300 |       await next.click();
+  301 |       await page.waitForTimeout(400);
+  302 |     }
+  303 |     expect(seen.size).toBeGreaterThanOrEqual(10);
+  304 |   });
+  305 | 
+  306 |   test('HOME-206 Featured Products carousel has Previous / Next; no dot indicators', async ({ page }) => {
+  307 |     const section = page.locator('.section-container, section').filter({ hasText: 'Featured Products' }).first();
+  308 |     await expect(section.getByRole('button', { name: /previous|prev/i }).first()).toBeVisible();
+  309 |     await expect(section.getByRole('button', { name: /next/i }).first()).toBeVisible();
+  310 |     // No role="tablist" dot indicators on this carousel
+  311 |     await expect(section.locator('[role="tablist"]')).toHaveCount(0);
+  312 |   });
+  313 | });
+  314 | 
+  315 | // ---------------------------------------------------------------------------
+  316 | // HOME-301–308  Style for Real Life
+  317 | // ---------------------------------------------------------------------------
+  318 | test.describe('Home – Style for Real Life tiles (HOME-301–308)', () => {
+  319 |   test.beforeEach(async ({ page }) => {
+  320 |     await bypassConsent(page);
+  321 |     await page.goto(HOME_PATH);
+  322 |   });
+  323 | 
+  324 |   test('HOME-301 section heading is "Style for Real Life"', async ({ page }) => {
+  325 |     await expect(page.getByRole('heading', { name: 'Style for Real Life' }).first()).toBeVisible();
+  326 |   });
+  327 | 
+  328 |   test('HOME-302 body copy matches spec', async ({ page }) => {
+  329 |     // Text appears in multiple elements (section + a product card); scope to the section
+  330 |     const section = page.locator('section').filter({ hasText: 'Style for Real Life' }).first();
+  331 |     await expect(section.getByText(/At Market Street, we believe fashion should be effortless/)).toBeVisible();
+  332 |   });
+  333 | 
+  334 |   test('HOME-303/304 four tiles: Women, Men, Kids, New Arrivals', async ({ page }) => {
+  335 |     const section = page.locator('section').filter({ hasText: 'Style for Real Life' }).first();
+  336 |     for (const label of ['Women', 'Men', 'Kids', 'New Arrivals']) {
+  337 |       await expect(section.getByText(label, { exact: true }).first()).toBeVisible();
+  338 |     }
+  339 |   });
+  340 | 
+  341 |   test('HOME-305 "Shop Now" label exists in tile markup (collapsed pre-hover)', async ({ page }) => {
+  342 |     const section = page.locator('section').filter({ hasText: 'Style for Real Life' }).first();
+  343 |     // Attached to DOM even though visually hidden
+  344 |     await expect(section.getByText('Shop Now').first()).toBeAttached();
+  345 |   });
+  346 | 
+  347 |   test('HOME-306 tile links target correct category URLs', async ({ page }) => {
+  348 |     const section = page.locator('section').filter({ hasText: 'Style for Real Life' }).first();
+  349 |     const expected = [
+  350 |       { label: 'Women',        href: '/category/women'        },
+  351 |       { label: 'Men',          href: '/category/men'          },
+  352 |       { label: 'Kids',         href: '/category/kids'         },
+  353 |       { label: 'New Arrivals', href: '/category/new-arrivals' },
+  354 |     ];
+  355 |     for (const { href } of expected) {
+  356 |       // Use href-based selector; hasText:'Men' would also match 'Women' (substring)
+  357 |       const link = section.locator(`a[href*="${href}"]`).first();
+> 358 |       await expect(link).toBeAttached();
+      |                          ^ Error: expect(locator).toBeAttached() failed
+  359 |       expect(await link.getAttribute('href')).toContain(href);
+  360 |     }
+  361 |   });
+  362 | 
+  363 |   test('HOME-307 Style for Real Life carousel has Previous and Next controls', async ({ page }) => {
+  364 |     const section = page.locator('section').filter({ hasText: 'Style for Real Life' }).first();
+  365 |     await expect(section.getByRole('button', { name: /previous|prev/i }).first()).toBeVisible();
+  366 |     await expect(section.getByRole('button', { name: /next/i }).first()).toBeVisible();
+  367 |   });
+  368 | 
+  369 | });
+  370 | 
+  371 | // ---------------------------------------------------------------------------
+  372 | // HOME-401–406  Collection banners
+  373 | // ---------------------------------------------------------------------------
+  374 | test.describe('Home – Collection banners (HOME-401–406)', () => {
+  375 |   test.beforeEach(async ({ page }) => {
+  376 |     await bypassConsent(page);
+  377 |     await page.goto(HOME_PATH);
+  378 |   });
+  379 | 
+  380 |   test('HOME-401 two "EXPLORE COLLECTION" CTAs are present (one per banner)', async ({ page }) => {
+  381 |     await expect(page.getByText('EXPLORE COLLECTION')).toHaveCount(2);
+  382 |   });
+  383 | 
+  384 |   test('HOME-402 Women banner: heading "Women" and curated footwear copy', async ({ page }) => {
+  385 |     await expect(page.getByText(/Discover our curated collection of sophisticated footwear/)).toBeVisible();
+  386 |   });
+  387 | 
+  388 |   test('HOME-403 Men banner: heading "Men" and timeless craftsmanship copy', async ({ page }) => {
+  389 |     await expect(page.getByText(/Timeless craftsmanship meets contemporary style/)).toBeVisible();
+  390 |   });
+  391 | 
+  392 |   test('HOME-405 Women banner CTA links to Women category', async ({ page }) => {
+  393 |     // aria-label="Explore collection: women's" — note: "women's" contains "men" so
+  394 |     // we must include the colon-space to avoid matching the men's link
+  395 |     const cta = page.getByRole('link', { name: /explore collection: women/i });
+  396 |     await expect(cta).toBeVisible();
+  397 |     expect(await cta.getAttribute('href')).toContain('/category/women');
+  398 |   });
+  399 | 
+  400 |   test('HOME-406 Men banner CTA links to Men category', async ({ page }) => {
+  401 |     // aria-label="Explore collection: men's" — ": men" prevents matching "women's"
+  402 |     const cta = page.getByRole('link', { name: /explore collection: men/i });
+  403 |     await expect(cta).toBeVisible();
+  404 |     expect(await cta.getAttribute('href')).toContain('/category/men');
+  405 |   });
+  406 | 
+  407 |   test('HOME-404 CTA has accessible name that includes the destination category', async ({ page }) => {
+  408 |     // The aria-label "Explore collection: women's" / "Explore collection: men's" exposes
+  409 |     // the destination category to assistive technology.
+  410 |     const womenCta = page.getByRole('link', { name: /explore collection: women/i });
+  411 |     const menCta   = page.getByRole('link', { name: /explore collection: men/i });
+  412 |     await expect(womenCta).toBeVisible();
+  413 |     await expect(menCta).toBeVisible();
+  414 |   });
+  415 | });
+  416 | 
+  417 | // ---------------------------------------------------------------------------
+  418 | // STATE-01–04  Interactive states
+  419 | // ---------------------------------------------------------------------------
+  420 | test.describe('Interactive states (STATE-01–04)', () => {
+  421 |   test.beforeEach(async ({ page }) => {
+  422 |     await bypassConsent(page);
+  423 |     await page.goto(HOME_PATH);
+  424 |   });
+  425 | 
+  426 |   // STATE-01 / STATE-02: header utility controls and CTAs present a hover state
+  427 |   // but reveal NO additional content — these are visual-only and not automated here.
+  428 | 
+  429 |   test('STATE-03 no element other than category tile and product card reveals content on hover', async ({ page }) => {
+  430 |     // NOTE: hovering the Sign In link reveals a sign-in dropdown (role="dialog") — this
+  431 |     // appears to be a site behaviour (quick-login on hover); test avoids it and instead
+  432 |     // verifies the hero CTA and logo do not reveal any dialog on hover.
+  433 |     await page.locator('[data-testid="header-logo"]').hover({ force: true });
+  434 |     await page.waitForTimeout(300);
+  435 |     // Exclude any sign-in quick-login dialog; just check that non-interactive elements are silent
+  436 |     const signInDialog = page.getByRole('dialog', { name: /sign in|log in|login/i });
+  437 |     await expect(signInDialog).toHaveCount(0);
+  438 | 
+  439 |     // Hover hero CTA — no new dialog appears
+  440 |     await page.getByText('Discover the Collection').first().hover({ force: true });
+  441 |     await page.waitForTimeout(300);
+  442 |     await expect(signInDialog).toHaveCount(0);
+  443 |   });
+  444 | 
+  445 | });
+  446 | 
+```
